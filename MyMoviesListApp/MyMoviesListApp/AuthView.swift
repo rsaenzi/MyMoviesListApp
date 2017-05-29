@@ -14,11 +14,22 @@ class AuthView: UIViewController {
     fileprivate var submitUrl = ""
     fileprivate var didTapSubmitButton = false
     
+    @IBOutlet weak var labelTitle: UILabel!
     @IBOutlet weak var labelCode: UILabel!
     @IBOutlet weak var webviewTrakt: UIWebView!
+    @IBOutlet weak var activityLoading: UIActivityIndicatorView!
+    @IBOutlet weak var buttonBack: UIButton!
+    @IBOutlet weak var buttonReload: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        labelTitle.text = LanguageString.authTitle.localize()
+        buttonBack.setTitle(LanguageString.back.localize(), for: .normal)
+        buttonReload.setTitle(LanguageString.reload.localize(), for: .normal)
+        
+        activityLoading.isHidden = true
+        
         labelCode.text = "-"
         presenter.getDeviceCode { [weak self] code, url in
             
@@ -34,6 +45,18 @@ class AuthView: UIViewController {
         super.viewDidAppear(animated)
     }
     
+    @IBAction func onTapBack(_ sender: UIButton, forEvent event: UIEvent) {
+        if activityLoading.isHidden == true {
+            webviewTrakt.goBack()
+        }
+    }
+    
+    @IBAction func onTapReload(_ sender: UIButton, forEvent event: UIEvent) {
+        if activityLoading.isHidden == true {
+            webviewTrakt.reload()
+        }
+    }
+    
     fileprivate func handleResultDeviceCode(_ code: String, _ url: String) {
         submitUrl = url
         labelCode.text = code
@@ -43,7 +66,7 @@ class AuthView: UIViewController {
     fileprivate func load(urlString: String) {
         
         guard let url: URL = URL(string: urlString) else {
-            labelCode.text = "X"
+            labelCode.text = ""
             return
         }
         
@@ -69,11 +92,20 @@ extension AuthView: UIWebViewDelegate {
         return true
     }
     
+    func webViewDidStartLoad(_ webView: UIWebView) {
+        activityLoading.isHidden = false
+    }
+    
+    func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
+        activityLoading.isHidden = true
+    }
+    
     func webViewDidFinishLoad(_ webView: UIWebView) {
         
+        activityLoading.isHidden = true
+        
         if didTapSubmitButton {
-            presenter.getToken {_ in
-            }
+            presenter.getToken()
         }
         
         didTapSubmitButton = false

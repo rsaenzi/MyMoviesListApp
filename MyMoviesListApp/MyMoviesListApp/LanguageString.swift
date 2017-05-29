@@ -12,6 +12,12 @@ enum LanguageString: String {
     case popular
     case search
     case searchPlaceholder
+    case authTitle
+    case back
+    case reload
+}
+
+extension LanguageString {
     
     func localize() -> String {
         let copy: String = NSLocalizedString(self.rawValue, tableName: nil, bundle: Bundle.main, value: "", comment: "")

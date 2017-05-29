@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 
 typealias DeviceCodeCallback = (_ code: String, _ url: String) -> Void
-typealias TokenCallback = (_ success: Bool) -> Void
 
 class AuthPresenter {
     
@@ -43,7 +42,7 @@ class AuthPresenter {
         }
     }
     
-    func getToken(completion: @escaping TokenCallback) {
+    func getToken() {
         
         interactor.getToken { success, responseCode in
             

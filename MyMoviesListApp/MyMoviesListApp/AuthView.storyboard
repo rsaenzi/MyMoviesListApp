@@ -6,6 +6,8 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -25,7 +27,7 @@
                                 <rect key="frame" x="0.0" y="20" width="320" height="70"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*Please sign in into Trakt, then type the code:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tba-Gm-QCM">
-                                        <rect key="frame" x="8" y="0.0" width="304" height="20"/>
+                                        <rect key="frame" x="8" y="4" width="304" height="20"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="20" id="LpA-fJ-P6T"/>
                                         </constraints>
@@ -34,7 +36,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*ABCABCABC" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gqz-c9-gkx">
-                                        <rect key="frame" x="8" y="28" width="304" height="34"/>
+                                        <rect key="frame" x="8" y="24" width="304" height="38"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -42,13 +44,13 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="Tba-Gm-QCM" firstAttribute="top" secondItem="Ebr-ds-m9F" secondAttribute="top" id="9Ro-lO-vXW"/>
+                                    <constraint firstItem="Tba-Gm-QCM" firstAttribute="top" secondItem="Ebr-ds-m9F" secondAttribute="top" constant="4" id="9Ro-lO-vXW"/>
                                     <constraint firstItem="Tba-Gm-QCM" firstAttribute="leading" secondItem="Ebr-ds-m9F" secondAttribute="leading" constant="8" id="9me-ni-XbF"/>
                                     <constraint firstAttribute="bottom" secondItem="gqz-c9-gkx" secondAttribute="bottom" constant="8" id="AET-Je-WPF"/>
                                     <constraint firstAttribute="height" constant="70" id="UEy-sf-q9g"/>
                                     <constraint firstAttribute="trailing" secondItem="gqz-c9-gkx" secondAttribute="trailing" constant="8" id="hdY-Ol-yC8"/>
                                     <constraint firstItem="gqz-c9-gkx" firstAttribute="leading" secondItem="Ebr-ds-m9F" secondAttribute="leading" constant="8" id="jmc-BO-kce"/>
-                                    <constraint firstItem="gqz-c9-gkx" firstAttribute="top" secondItem="Tba-Gm-QCM" secondAttribute="bottom" constant="8" id="lU6-8t-YJ2"/>
+                                    <constraint firstItem="gqz-c9-gkx" firstAttribute="top" secondItem="Tba-Gm-QCM" secondAttribute="bottom" id="lU6-8t-YJ2"/>
                                     <constraint firstAttribute="trailing" secondItem="Tba-Gm-QCM" secondAttribute="trailing" constant="8" id="o8F-LQ-IBr"/>
                                 </constraints>
                             </view>
@@ -59,27 +61,75 @@
                                     <outlet property="delegate" destination="00W-gK-42s" id="emt-ae-qPP"/>
                                 </connections>
                             </webView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Bud-IQ-1Xu">
+                                <rect key="frame" x="150" y="319" width="20" height="20"/>
+                            </activityIndicatorView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jPG-L3-elN" userLabel="Toolbar">
+                                <rect key="frame" x="0.0" y="518" width="320" height="50"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WAR-Ds-LUv">
+                                        <rect key="frame" x="159" y="0.0" width="161" height="50"/>
+                                        <state key="normal" title="*Reload">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onTapReload:forEvent:" destination="00W-gK-42s" eventType="touchUpInside" id="DHx-9D-7wz"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cdM-Kz-xYQ">
+                                        <rect key="frame" x="0.0" y="0.0" width="159" height="50"/>
+                                        <state key="normal" title="*Back">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onTapBack:forEvent:" destination="00W-gK-42s" eventType="touchUpInside" id="35s-Uq-qNQ"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="cdM-Kz-xYQ" secondAttribute="bottom" id="0XD-2E-Ozn"/>
+                                    <constraint firstAttribute="trailing" secondItem="WAR-Ds-LUv" secondAttribute="trailing" id="4Zt-1v-Hyo"/>
+                                    <constraint firstAttribute="bottom" secondItem="WAR-Ds-LUv" secondAttribute="bottom" id="5mL-EM-8x9"/>
+                                    <constraint firstItem="cdM-Kz-xYQ" firstAttribute="top" secondItem="jPG-L3-elN" secondAttribute="top" id="9x1-2h-2xQ"/>
+                                    <constraint firstAttribute="height" constant="50" id="AlN-YM-S08"/>
+                                    <constraint firstItem="WAR-Ds-LUv" firstAttribute="top" secondItem="jPG-L3-elN" secondAttribute="top" id="Cy7-BK-FHm"/>
+                                    <constraint firstItem="WAR-Ds-LUv" firstAttribute="width" secondItem="jPG-L3-elN" secondAttribute="width" multiplier="1:2" constant="1" id="IgJ-SS-Osf"/>
+                                    <constraint firstItem="cdM-Kz-xYQ" firstAttribute="leading" secondItem="jPG-L3-elN" secondAttribute="leading" id="Pgb-eb-p6W"/>
+                                    <constraint firstItem="WAR-Ds-LUv" firstAttribute="leading" secondItem="cdM-Kz-xYQ" secondAttribute="trailing" id="SGj-9D-h1I"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Ebr-ds-m9F" secondAttribute="trailing" id="2by-WF-ejY"/>
+                            <constraint firstItem="jPG-L3-elN" firstAttribute="leading" secondItem="h1u-Os-pMG" secondAttribute="leading" id="M7J-ws-g0W"/>
+                            <constraint firstItem="qKE-SZ-ifX" firstAttribute="top" secondItem="jPG-L3-elN" secondAttribute="bottom" id="MQ8-Tz-H2S"/>
                             <constraint firstItem="Ebr-ds-m9F" firstAttribute="leading" secondItem="h1u-Os-pMG" secondAttribute="leading" id="NFk-Jb-390"/>
+                            <constraint firstAttribute="trailing" secondItem="jPG-L3-elN" secondAttribute="trailing" id="QNw-HZ-2Ht"/>
+                            <constraint firstItem="Bud-IQ-1Xu" firstAttribute="width" secondItem="hsL-RV-uDB" secondAttribute="height" multiplier="10:239" id="TW6-Zi-vnc"/>
                             <constraint firstAttribute="trailing" secondItem="hsL-RV-uDB" secondAttribute="trailing" id="bSG-xf-n7g"/>
                             <constraint firstItem="hsL-RV-uDB" firstAttribute="leading" secondItem="h1u-Os-pMG" secondAttribute="leading" id="beP-dq-rXu"/>
+                            <constraint firstItem="Bud-IQ-1Xu" firstAttribute="centerY" secondItem="hsL-RV-uDB" secondAttribute="centerY" id="nDF-OW-dQg"/>
                             <constraint firstItem="qKE-SZ-ifX" firstAttribute="top" secondItem="hsL-RV-uDB" secondAttribute="bottom" id="oKx-kM-lSI"/>
                             <constraint firstItem="hsL-RV-uDB" firstAttribute="top" secondItem="Ebr-ds-m9F" secondAttribute="bottom" id="rdx-Ds-caR"/>
                             <constraint firstItem="Ebr-ds-m9F" firstAttribute="top" secondItem="R3u-zs-Mzb" secondAttribute="bottom" id="ulv-a6-YkO"/>
+                            <constraint firstItem="Bud-IQ-1Xu" firstAttribute="centerX" secondItem="hsL-RV-uDB" secondAttribute="centerX" id="yCv-wS-2qa"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Title" id="dVw-1L-7t5"/>
                     <connections>
+                        <outlet property="activityLoading" destination="Bud-IQ-1Xu" id="pSX-rc-2sd"/>
+                        <outlet property="buttonBack" destination="cdM-Kz-xYQ" id="Lkn-hD-Nve"/>
+                        <outlet property="buttonReload" destination="WAR-Ds-LUv" id="gOF-Q2-kpF"/>
                         <outlet property="labelCode" destination="gqz-c9-gkx" id="dD6-8S-3gl"/>
+                        <outlet property="labelTitle" destination="Tba-Gm-QCM" id="Rpt-N7-l6h"/>
                         <outlet property="webviewTrakt" destination="hsL-RV-uDB" id="z0C-sn-HQ3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oLH-6V-ojn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-39.200000000000003" y="88.605697151424295"/>
+            <point key="canvasLocation" x="-39.375" y="87.676056338028175"/>
         </scene>
     </scenes>
 </document>

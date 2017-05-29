@@ -10,3 +10,6 @@
 "popular" = "Popular";
 "search" = "Búsqueda";
 "searchPlaceholder" = "Ingresa el nombre de la película";
+"authTitle" = "Porfavor ingrese a Trakt, luego ingrese el código:";
+"back" = "Atrás";
+"reload" = "Recargar";

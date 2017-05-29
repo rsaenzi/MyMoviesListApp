@@ -10,3 +10,6 @@
 "popular" = "Popular";
 "search" = "Search";
 "searchPlaceholder" = "Enter the movie name";
+"authTitle" = "Please sign in into Trakt, then type the code:";
+"back" = "Back";
+"reload" = "Reload";
