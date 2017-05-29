@@ -12,14 +12,10 @@ import UIKit
 class UILoader {
     
     static func loadScene<T: UIViewController>(from type: T.Type) -> T {
-        
-        // Get the screen name
+
         let name = className(some: type)
-        
-        // Load Storyboard
         let storyboard = UIStoryboard(name: name, bundle: nil)
         
-        // Load ViewController an cast it
         guard let screen = storyboard.instantiateViewController(withIdentifier: name) as? T else {
             fatalError("No UIViewController with name \(name) was found")
         }

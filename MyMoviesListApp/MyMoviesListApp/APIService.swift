@@ -30,7 +30,6 @@ extension APIService: TargetType {
             return URL(string: "https://api.trakt.tv")!
         }}
     
-    /// The path to be appended to `baseURL` to form the full `URL`.
     var path: String {
         switch self {
         case .getDeviceCode:
@@ -60,7 +59,6 @@ extension APIService: TargetType {
         }
     }
 
-    /// The parameters to be encoded in the request.
     var parameters: [String: Any]? {
         switch self {
         case .getDeviceCode(let clientId):
@@ -88,7 +86,6 @@ extension APIService: TargetType {
         }
     }
 
-    /// The method used for parameter encoding.
     var parameterEncoding: ParameterEncoding {
         switch self {
         case .getDeviceCode, .getToken:
@@ -99,12 +96,10 @@ extension APIService: TargetType {
         }
     }
     
-    /// Provides stub data for use in testing.
     var sampleData: Data {
         return "".utf8Encoded
     }
 
-    /// The type of HTTP task to be performed.
     var task: Task {
         return .request
     }

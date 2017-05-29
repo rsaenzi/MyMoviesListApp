@@ -13,7 +13,6 @@ class AuthModule {
     var wireframe: AuthWireframe
     var interactor: AuthInteractor
     var presenter: AuthPresenter
-//    var view: AuthView
     
     init() {
         wireframe = AuthWireframe()
@@ -23,8 +22,5 @@ class AuthModule {
         presenter = AuthPresenter()
         presenter.wireframe = wireframe
         presenter.interactor = interactor
-        
-//        view = UILoader.loadScene(from: AuthView.self)
-//        view.presenter = presenter
     }
 }
