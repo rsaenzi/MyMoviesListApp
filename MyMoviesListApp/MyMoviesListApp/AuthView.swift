@@ -43,6 +43,7 @@ class AuthView: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        webviewTrakt.becomeFirstResponder()
     }
     
     @IBAction func onTapBack(_ sender: UIButton, forEvent event: UIEvent) {
