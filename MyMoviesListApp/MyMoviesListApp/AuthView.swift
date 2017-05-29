@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import KVNProgress
 
 class AuthView: UIViewController {
     
@@ -39,7 +38,6 @@ class AuthView: UIViewController {
         submitUrl = url
         labelCode.text = code
         load(urlString: url)
-        KVNProgress.dismiss()
     }
     
     fileprivate func load(urlString: String) {

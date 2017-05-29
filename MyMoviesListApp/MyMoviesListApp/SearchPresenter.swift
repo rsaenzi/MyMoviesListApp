@@ -17,6 +17,8 @@ class SearchPresenter {
     var searchResults: [SearchMovieResponse] = []
     let itemsPerPage = 10
     
+    let validSearchChars = "0123456789 abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ"
+    
     func getCell(of tableView: UITableView, for indexPath: IndexPath) -> CellSearchItem {
         
         let cell: CellSearchItem = UILoader.loadCell(from: tableView, for: indexPath, from: CellSearchItem.self)
@@ -34,9 +36,9 @@ class SearchPresenter {
         return cell
     }
     
-    func getMovies(using keyword: String, for page: Int, completion: @escaping SearchPresenterCallback) {
+    func getMovies(using keyword: String, at timestamp: Date, for page: Int, completion: @escaping SearchPresenterCallback) {
         
-        interactor.searchMovies(using: keyword, for: page, and: itemsPerPage) { [weak self] movies, responseCode in
+        interactor.searchMovies(using: keyword, at: timestamp, for: page, and: itemsPerPage) { [weak self] keyword, timestamp, movies, responseCode in
             
             guard let `self` = self else {
                 completion(false)
@@ -47,8 +49,11 @@ class SearchPresenter {
                 completion(false)
                 return
             }
+
+            if SearchView.keywordTimestamp <= timestamp {
+                self.searchResults.append(contentsOf: movies)
+            }
             
-            self.searchResults.append(contentsOf: movies)
             completion(true)
         }
     }
@@ -72,5 +77,10 @@ class SearchPresenter {
                 table.reloadRows(at: [index], with: .none)
             }
         }
+    }
+    
+    func validateTyped(newWord: String) -> Bool {
+        let result = newWord.trimmingCharacters(in: CharacterSet(charactersIn: validSearchChars))
+        return result.characters.count == 0
     }
 }

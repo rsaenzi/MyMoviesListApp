@@ -10,58 +10,58 @@ import Foundation
 import Moya
 import ObjectMapper
 
-typealias SearchInteractorCallback = (_ movies: [SearchMovieResponse], _ code: APIResponseCode) -> Void
+typealias SearchInteractorCallback = (_ keyword: String, _ timestamp: Date, _ movies: [SearchMovieResponse], _ code: APIResponseCode) -> Void
 typealias GetBackImageCallback = (_ backImage: String, _ indexPath: IndexPath, _ code: APIResponseCode) -> Void
 
 class SearchInteractor {
     
-    func searchMovies(using keyword: String, for page: Int, and pageItems: Int, callback: @escaping SearchInteractorCallback) {
+    func searchMovies(using keyword: String, at timestamp: Date, for page: Int, and pageItems: Int, callback: @escaping SearchInteractorCallback) {
         
         let provider = MoyaProvider<APIService>(endpointClosure: APIService.endpointClosure)
         provider.request(.getTextQueryResults(query: keyword, page: page, pageItems: pageItems)) { [weak self] result in
             
             guard let `self` = self else {
-                callback([], .referenceError)
+                callback(keyword, timestamp, [], .referenceError)
                 return
             }
             
             switch result {
             case let .success(moyaResponse):
-                self.handleSuccess(moyaResponse, callback)
+                self.handleSuccess(keyword, timestamp, moyaResponse, callback)
                 
             case .failure(_):
-                callback([], .connectionError)
+                callback(keyword, timestamp, [], .connectionError)
                 return
             }
         }
     }
     
-    fileprivate func handleSuccess(_ response: Response, _ callback: SearchInteractorCallback) {
+    fileprivate func handleSuccess(_ keyword: String, _ timestamp: Date, _ response: Response, _ callback: SearchInteractorCallback) {
         
         var json: String = ""
         do {
             json = try response.mapString()
         } catch {
-            callback([], .parsingError)
+            callback(keyword, timestamp, [], .parsingError)
             return
         }
         
         guard response.statusCode == 200 else {
-            callback([], .httpCodeError)
+            callback(keyword, timestamp, [], .httpCodeError)
             return
         }
         
         guard json.characters.count > 0 else {
-            callback([], .emptyJsonError)
+            callback(keyword, timestamp, [], .emptyJsonError)
             return
         }
         
         guard let movies: [SearchMovieResponse] = Mapper<SearchMovieResponse>().mapArray(JSONString: json) else {
-            callback([], .mappingError)
+            callback(keyword, timestamp, [], .mappingError)
             return
         }
         
-        callback(movies, .success)
+        callback(keyword, timestamp, movies, .success)
     }
     
     func getImage(for movie: SearchMovieResponse, at indexPath: IndexPath, callback: @escaping GetBackImageCallback) {

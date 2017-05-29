@@ -16,7 +16,7 @@ target 'MyMoviesListApp' do
 
   # - UI
   pod 'TPKeyboardAvoiding', '~> 1.3'
-  pod 'KVNProgress'
+  #pod 'KVNProgress'
 
   # - Security
   pod 'SwiftKeychainWrapper'

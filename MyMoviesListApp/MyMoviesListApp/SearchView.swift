@@ -19,6 +19,9 @@ class SearchView: UIViewController {
     fileprivate var loadingData = false
     fileprivate var loadedPages = 1
     
+    static var currentKeyword = ""
+    static var keywordTimestamp = Date()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -47,23 +50,9 @@ class SearchView: UIViewController {
         }
     }
     
-    fileprivate func loadSearchedMovies(for searchString: String?) {
+    fileprivate func loadSearchedMovies(for rawString: String?) {
         
-        guard let keyword = searchString else {
-            loadingData = false
-            activityLoading.isHidden = !loadingData
-            return
-        }
-        
-        print("Search: \(keyword)")
-        
-        guard keyword.trimmingCharacters(in: .whitespacesAndNewlines).characters.count > 0 else {
-            loadingData = false
-            activityLoading.isHidden = !loadingData
-            return
-        }
-        
-        guard keyword.characters.count > 1 else {
+        guard let keyword = rawString, keyword.characters.count > 1 else {
             loadingData = false
             activityLoading.isHidden = !loadingData
             return
@@ -72,7 +61,10 @@ class SearchView: UIViewController {
         loadingData = true
         activityLoading.isHidden = !loadingData
         
-        presenter.getMovies(using: keyword.trimmingCharacters(in: .newlines), for: loadedPages) { _ in
+        SearchView.currentKeyword = keyword
+        SearchView.keywordTimestamp = Date()
+        
+        presenter.getMovies(using: keyword, at: SearchView.keywordTimestamp, for: loadedPages) { success in
             
             self.loadingData = false
             self.activityLoading.isHidden = !self.loadingData
@@ -124,6 +116,10 @@ extension SearchView: UISearchBarDelegate {
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        return presenter.validateTyped(newWord: text)
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
