@@ -1,0 +1,137 @@
+//
+//  APIService.swift
+//  MyMoviesListApp
+//
+//  Created by Rigoberto Sáenz Imbacuán on 5/28/17.
+//  Copyright © 2017 Rigoberto Sáenz Imbacuán. All rights reserved.
+//
+
+import Foundation
+import Moya
+import SwiftKeychainWrapper
+
+enum APIService {
+    case getDeviceCode(clientId: String)
+    case getToken(code: String, clientId: String, clientSecret: String)
+    case getPopularMovies(page: Int, pageItems: Int)
+    case getTextQueryResults(query: String, page: Int, pageItems: Int)
+    
+    case getImage(imageId: String, apiKey: String)
+}
+
+extension APIService: TargetType {
+    
+    var baseURL: URL {
+        switch self {
+        case .getImage:
+            return URL(string: "http://webservice.fanart.tv/v3")!
+            
+        default:
+            return URL(string: "https://api.trakt.tv")!
+        }}
+    
+    /// The path to be appended to `baseURL` to form the full `URL`.
+    var path: String {
+        switch self {
+        case .getDeviceCode:
+            return "/oauth/device/code"
+            
+        case .getToken:
+            return "/oauth/device/token"
+            
+        case .getPopularMovies:
+            return "/movies/popular"
+            
+        case .getTextQueryResults:
+            return "/search/movie"
+            
+        case .getImage(let imageId, _):
+            return "/movies/\(imageId)"
+        }
+    }
+    
+    var method: Moya.Method {
+        switch self {
+        case .getDeviceCode, .getToken:
+            return .post
+            
+        case .getPopularMovies, .getTextQueryResults, .getImage:
+            return .get
+        }
+    }
+
+    /// The parameters to be encoded in the request.
+    var parameters: [String: Any]? {
+        switch self {
+        case .getDeviceCode(let clientId):
+            return ["client_id": clientId]
+            
+        case .getToken(let code, let clientId, let clientSecret):
+            return ["code": code,
+                    "client_id": clientId,
+                    "client_secret": clientSecret]
+            
+        case .getPopularMovies(let page, let pageItems):
+            return ["extended": "full",
+                    "page": page,
+                    "limit": pageItems]
+            
+        case .getTextQueryResults(let query, let page, let pageItems):
+            return ["query": query,
+                    "extended": "full",
+                    "fields": "title",
+                    "page": page,
+                    "limit": pageItems]
+            
+        case .getImage( _, let apiKey):
+            return ["api_key": apiKey]
+        }
+    }
+
+    /// The method used for parameter encoding.
+    var parameterEncoding: ParameterEncoding {
+        switch self {
+        case .getDeviceCode, .getToken:
+            return JSONEncoding.default
+            
+        case .getPopularMovies, .getTextQueryResults, .getImage:
+            return URLEncoding.default
+        }
+    }
+    
+    /// Provides stub data for use in testing.
+    var sampleData: Data {
+        return "".utf8Encoded
+    }
+
+    /// The type of HTTP task to be performed.
+    var task: Task {
+        return .request
+    }
+}
+
+extension APIService {
+    
+    static let endpointClosure = { (target: APIService) -> Endpoint<APIService> in
+        let defaultEndpoint = MoyaProvider.defaultEndpointMapping(for: target)
+        
+        switch target {
+            
+        case .getPopularMovies, .getTextQueryResults:
+            
+            guard let accessToken: String = KeychainWrapper.standard.string(forKey: KeychainKey.apiAccessToken.rawValue),
+                  let refreshToken: String = KeychainWrapper.standard.string(forKey: KeychainKey.apiRefreshToken.rawValue) else {
+                    
+                return defaultEndpoint
+            }
+            
+            return defaultEndpoint.adding(newHTTPHeaderFields:
+                ["trakt-api-key": APICredentials.traktClientId,
+                 "trakt-api-version": "2",
+                 "Authorization": "Bearer \(accessToken)"])
+            
+        default:
+            return defaultEndpoint
+        }
+    }
+}

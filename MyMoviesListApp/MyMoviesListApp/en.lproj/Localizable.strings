@@ -1,0 +1,12 @@
+/* 
+  Localizable.strings
+  MyMoviesListApp
+
+  Created by Rigoberto Sáenz Imbacuán on 5/25/17.
+  Copyright © 2017 Rigoberto Sáenz Imbacuán. All rights reserved.
+*/
+
+// English
+"popular" = "Popular";
+"search" = "Search";
+"searchPlaceholder" = "Enter the movie name";
