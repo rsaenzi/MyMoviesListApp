@@ -15,6 +15,7 @@ class AuthModule {
     var presenter: AuthPresenter
     
     init() {
+        
         wireframe = AuthWireframe()
         
         interactor = AuthInteractor()
