@@ -64,7 +64,7 @@ class SearchView: UIViewController {
         SearchView.currentKeyword = keyword
         SearchView.keywordTimestamp = Date()
         
-        presenter.getMovies(using: keyword, at: SearchView.keywordTimestamp, for: loadedPages) { success in
+        presenter.getMovies(using: keyword, at: SearchView.keywordTimestamp, for: loadedPages) { _ in
             
             self.loadingData = false
             self.activityLoading.isHidden = !self.loadingData

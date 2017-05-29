@@ -60,15 +60,8 @@ class PopularPresenter {
         
         interactor.getImage(for: movie.imdbId, at: indexPath) { images, index, responseCode in
             
-            guard responseCode == .success else {
-                return
-            }
-            
-            guard let _ = table.cellForRow(at: index) as? CellPopularItem else {
-                return
-            }
-            
-            guard let background = images.first else {
+            guard responseCode == .success,
+                let background = images.first else {
                 return
             }
             

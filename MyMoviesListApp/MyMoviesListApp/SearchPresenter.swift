@@ -38,7 +38,7 @@ class SearchPresenter {
     
     func getMovies(using keyword: String, at timestamp: Date, for page: Int, completion: @escaping SearchPresenterCallback) {
         
-        interactor.searchMovies(using: keyword, at: timestamp, for: page, and: itemsPerPage) { [weak self] keyword, timestamp, movies, responseCode in
+        interactor.searchMovies(using: keyword, at: timestamp, for: page, and: itemsPerPage) { [weak self] _, timestamp, movies, responseCode in
             
             guard let `self` = self else {
                 completion(false)
@@ -65,10 +65,6 @@ class SearchPresenter {
         interactor.getImage(for: movie, at: indexPath) { image, index, responseCode in
             
             guard responseCode == .success else {
-                return
-            }
-            
-            guard let _ = table.cellForRow(at: index) as? CellSearchItem else {
                 return
             }
             
