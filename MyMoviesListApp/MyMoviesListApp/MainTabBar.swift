@@ -13,7 +13,7 @@ class MainTabBar: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tabBar.barStyle = .blackOpaque
-        tabBar.items?.first?.title = LanguageString.popular.localize()
+        tabBar.items?[0].title = LanguageString.popular.localize()
         tabBar.items?[1].title = LanguageString.search.localize()
     }
 }

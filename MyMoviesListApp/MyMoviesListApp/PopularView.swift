@@ -24,6 +24,8 @@ class PopularView: UIViewController {
         super.viewDidLoad()
         
         navBar.topItem?.title = LanguageString.popular.localize()
+        
+        activityLoading.clipsToBounds = true
         activityLoading.layer.cornerRadius = activityLoading.frame.size.height / 2
         activityLoading.isHidden = true
         

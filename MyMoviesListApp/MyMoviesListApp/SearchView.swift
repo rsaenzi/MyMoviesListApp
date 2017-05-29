@@ -23,6 +23,8 @@ class SearchView: UIViewController {
         super.viewDidLoad()
         
         searchBarName.placeholder = LanguageString.searchPlaceholder.localize()
+        
+        activityLoading.clipsToBounds = true
         activityLoading.layer.cornerRadius = activityLoading.frame.size.height / 2
         activityLoading.isHidden = true
         
