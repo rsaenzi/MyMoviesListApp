@@ -13,6 +13,7 @@ import SwiftKeychainWrapper
 enum APIService {
     case getDeviceCode(clientId: String)
     case getToken(code: String, clientId: String, clientSecret: String)
+    case refreshToken(refreshToken: String, clientId: String, clientSecret: String)
     case getPopularMovies(page: Int, pageItems: Int)
     case getTextQueryResults(query: String, page: Int, pageItems: Int)
     
@@ -38,6 +39,9 @@ extension APIService: TargetType {
         case .getToken:
             return "/oauth/device/token"
             
+        case .refreshToken:
+            return "/oauth/token"
+            
         case .getPopularMovies:
             return "/movies/popular"
             
@@ -51,7 +55,7 @@ extension APIService: TargetType {
     
     var method: Moya.Method {
         switch self {
-        case .getDeviceCode, .getToken:
+        case .getDeviceCode, .getToken, .refreshToken:
             return .post
             
         case .getPopularMovies, .getTextQueryResults, .getImage:
@@ -68,6 +72,12 @@ extension APIService: TargetType {
             return ["code": code,
                     "client_id": clientId,
                     "client_secret": clientSecret]
+            
+        case .refreshToken(let refreshToken, let clientId, let clientSecret):
+            return ["refresh_token": refreshToken,
+                    "client_id": clientId,
+                    "client_secret": clientSecret,
+                    "grant_type": "refresh_token"]
             
         case .getPopularMovies(let page, let pageItems):
             return ["extended": "full",
@@ -88,7 +98,7 @@ extension APIService: TargetType {
 
     var parameterEncoding: ParameterEncoding {
         switch self {
-        case .getDeviceCode, .getToken:
+        case .getDeviceCode, .getToken, .refreshToken:
             return JSONEncoding.default
             
         case .getPopularMovies, .getTextQueryResults, .getImage:
